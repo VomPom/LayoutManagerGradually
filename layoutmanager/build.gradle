@@ -1,0 +1,39 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+apply from: '../deps.gradle'
+android {
+    compileSdkVersion Ver.compile_sdk
+    buildToolsVersion Ver.build_tools
+
+    defaultConfig {
+        minSdkVersion Ver.min_sdk
+        targetSdkVersion Ver.target_sdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation Deps.androidx.constraintlayout
+    implementation Deps.androidx.core
+    implementation Deps.androidx.multidex
+    implementation Deps.androidx.recyclerview
+}
