@@ -61,6 +61,7 @@ class LayoutManagerActivity : Activity() {
             put(LinearLayoutManager2::class.java, "2 对屏幕外的View回收")
             put(LinearLayoutManager3::class.java, "3 向上滑动的时View的填充")
             put(LinearLayoutManager4::class.java, "4 两个方向的View填充")
+            put(LinearLayoutManager5::class.java, "5 对顶部和底部滑动边界处理")
         }
     }
 

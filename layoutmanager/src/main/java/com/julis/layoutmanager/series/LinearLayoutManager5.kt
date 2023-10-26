@@ -1,18 +1,16 @@
-package com.julis.layoutmanager
+package com.julis.layoutmanager.series
 
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.abs
-import kotlin.math.log
 
 /**
  * Created by @juliswang on 2023/10/19 19:58
  *
  * @Description
  */
-class MyLinearLayoutManager : RecyclerView.LayoutManager() {
+class LinearLayoutManager5 : RecyclerView.LayoutManager() {
     private val TAG = "JLayoutManager"
 
     /**

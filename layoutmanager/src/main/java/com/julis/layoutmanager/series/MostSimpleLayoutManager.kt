@@ -43,6 +43,15 @@ class MostSimpleLayoutManager : RecyclerView.LayoutManager() {
         return true
     }
 
+    /**
+     * 根据屏幕横向滑动的距离dx计算实际滑动的距离。
+     * 默认不进行滑动，返回值为0
+     *
+     * @param dx
+     * @param recycler
+     * @param state
+     * @return 实际滚动的距离。如果 dx 为负并且朝该方向继续滚动，则返回值将为负
+     */
     override fun scrollHorizontallyBy(dx: Int, recycler: RecyclerView.Recycler?, state: RecyclerView.State?): Int {
         // 在这里处理左右滚动逻辑，dx 表示滚动的距离
         // 平移所有子视图
@@ -55,6 +64,15 @@ class MostSimpleLayoutManager : RecyclerView.LayoutManager() {
         return true
     }
 
+    /**
+     * 根据屏幕纵向滑动的距离dy计算实际滑动的距离。
+     * 默认不进行滑动，返回值为0
+     *
+     * @param dy
+     * @param recycler
+     * @param state
+     * @return 如果 dy 为负并且朝该方向继续滚动，则返回值将为负
+     */
     override fun scrollVerticallyBy(dy: Int, recycler: RecyclerView.Recycler?, state: RecyclerView.State?): Int {
         // 在这里处理上下的滚动逻辑，dy 表示滚动的距离
         // 平移所有子视图
