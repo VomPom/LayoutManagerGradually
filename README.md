@@ -1,6 +1,6 @@
 # LayoutManagerGradually
 
-自定义 LayoutManager 的渐进式实现，最终实现一个简单的 LinearLayoutManager（只支持 LinearLayoutManager.VERTICAL）方向，适合对 LayoutManager 整体流程的学习与理解，整体代码分为多个文件，每个文件都是对前一段代码的补充，方便理解。
+自定义 LinearLayoutManager 的渐进式实现，最终实现一个简单的 LinearLayoutManager（只支持 LinearLayoutManager.VERTICAL 滚动方向）。该工程适合对 LayoutManager 整体流程的学习与理解，整个 LinearLayoutManager 代码分为多份子文件，每个文件都是对前一段代码的补充，方便理解。
 
 ## 最终效果
 

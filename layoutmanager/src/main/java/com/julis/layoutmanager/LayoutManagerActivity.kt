@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.julis.layoutmanager.series.*
 
 /**
- * Copyright (C) @2023 THL A29 Limited, a Tencent company. All rights reserved.
  *
  * Created by @juliswang on 2023/10/19 10:46
  *
