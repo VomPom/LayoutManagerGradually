@@ -91,7 +91,10 @@ class LinearLayoutManager2 : RecyclerView.LayoutManager() {
     }
 
     override fun scrollVerticallyBy(dy: Int, recycler: RecyclerView.Recycler, state: RecyclerView.State?): Int {
+        // 在这里处理上下的滚动逻辑，dy 表示滚动的距离
+        // 平移所有子视图
         offsetChildrenVertical(-dy)
+        // 如果实际滚动距离与 dy 相同，返回 dy；如果未滚动，返回 0
         recycleInvisibleView(dy, recycler)
         return dy
     }
