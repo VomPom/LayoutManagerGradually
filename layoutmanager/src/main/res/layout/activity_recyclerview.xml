@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:layout_marginTop="10dp"
         android:text="点击下面的按钮切换LayoutManager"
         android:textColor="#000000"
         android:textSize="12sp" />
@@ -25,5 +26,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="30dp" />
+
+    <Button
+        android:id="@+id/btn_scroll_to_30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:text="Scroll to 30"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_smooth_scroll_to_30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="40dp"
+        android:text="SmoothScroll to 30"
+        android:textAllCaps="false" />
 </FrameLayout>

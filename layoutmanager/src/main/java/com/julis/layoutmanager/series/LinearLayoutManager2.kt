@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Created by @juliswang on 2023/10/19 19:58
  *
- * @Description
+ * @Description  实现对滑动到屏幕以外的 ItemView 进行回收
+ *
  */
 class LinearLayoutManager2 : RecyclerView.LayoutManager() {
     private val TAG = "JLayoutManager"
@@ -96,7 +97,7 @@ class LinearLayoutManager2 : RecyclerView.LayoutManager() {
     }
 
     /**
-     * 回收掉在界面上看不到的Item View
+     * 回收掉在界面上看不到的 ItemView
      *
      * @param dy
      * @param recycler

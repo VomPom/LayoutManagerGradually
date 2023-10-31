@@ -1,34 +1,37 @@
 package com.julis.layoutmanager
 
-import android.util.Log
+import android.graphics.PointF
+import android.util.DisplayMetrics
 import android.view.View
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.abs
-import kotlin.math.log
+
 
 /**
  * Created by @juliswang on 2023/10/19 19:58
  *
  * @Description
+ *
+ *   一个简单的 LinearLayoutManager（只支持 LinearLayoutManager.VERTICAL）方向
+ *        实现:
+ *            1、数据填充只需要填充屏幕范围内的 ItemView
+ *            2、回收掉屏幕以外的 ItemView
+ *            3、屏幕外 ItemView 再回到屏幕后数据需要重新填充
+ *            4、对滑动边界进行处理
+ *            5、对 scrollToPosition 进行支持
+ *            6、对 smoothScrollToPosition 进行支持
+ *
+ *            // TODO...其他更复杂的功能
+ *
  */
 class MyLinearLayoutManager : RecyclerView.LayoutManager() {
     private val TAG = "JLayoutManager"
 
-    /**
-     * OrientationHelper 提供了一些与布局方向（垂直或水平）相关的实用方法，
-     * 以帮助 RecyclerView.LayoutManager 更轻松地处理滚动、布局和测量任务。
-     * OrientationHelper 是一个抽象类，它有两个具体的实现：VerticalHelper 和 HorizontalHelper，分别用于处理垂直和水平布局。
-     *
-     * getTotalSpace()：获取 RecyclerView 可用空间（宽度或高度）。
-     * getStartAfterPadding()：获取 RecyclerView 起始边缘（顶部或左侧）与内边距之后的位置。
-     * getEndAfterPadding()：获取 RecyclerView 结束边缘（底部或右侧）与内边距之后的位置。
-     * getDecoratedStart(View view)：获取给定视图的起始边缘（顶部或左侧）与装饰（如 ItemDecoration）之后的位置。
-     * getDecoratedEnd(View view)：获取给定视图的结束边缘（底部或右侧）与装饰之后的位置。
-     * getTransformedEndWithDecoration(View view)：获取给定视图的结束边缘（底部或右侧）与装饰和转换（如缩放、旋转等）之后的位置。
-     * getTransformedStartWithDecoration(View view)：获取给定视图的起始边缘（顶部或左侧）与装饰和转换之后的位置。
-     */
     private val orientationVerticalHelper = OrientationHelper.createVerticalHelper(this)
+
+    private var mPendingScrollPosition = RecyclerView.NO_POSITION
 
     override fun isAutoMeasureEnabled(): Boolean {
         return true
@@ -55,7 +58,9 @@ class MyLinearLayoutManager : RecyclerView.LayoutManager() {
         //垂直方向的偏移量
         var offsetTop = 0
         var currentPosition = 0
-
+        if (mPendingScrollPosition != RecyclerView.NO_POSITION) {
+            currentPosition = mPendingScrollPosition
+        }
         while (remainSpace > 0 && currentPosition < state.itemCount) {
             // 从适配器获取与给定位置关联的视图
             val itemView = recycler.getViewForPosition(currentPosition)
@@ -240,4 +245,82 @@ class MyLinearLayoutManager : RecyclerView.LayoutManager() {
         }
         recycleViews.clear()
     }
+
+    override fun scrollToPosition(position: Int) {
+        super.scrollToPosition(position)
+        if (position < 0 || position >= itemCount) {
+            return
+        }
+        mPendingScrollPosition = position
+        requestLayout()
+    }
+
+    /**
+     * 实现平滑的移动到指定的位置
+     *
+     * @param recyclerView
+     * @param state
+     * @param position
+     */
+    override fun smoothScrollToPosition(
+        recyclerView: RecyclerView,
+        state: RecyclerView.State,
+        position: Int
+    ) {
+        if (position >= itemCount || position < 0) {
+            return
+        }
+        /**
+         * 要实现自定义的 smoothScrollToPosition 动画效果，这一块如果要完全自己实现的话比较复杂，可以直接使用系统提供的 LinearSmoothScroller改造
+         * 也可以继承 RecyclerView.SmoothScroller 自定义，也可以完全不使用 SmoothScroller， 照着 SmoothScroller 的实现使用类似 ValueAnimator
+         * 自定义动画，添加动画 UpdateListener，在 onAnimationUpdate 的时候动态计算布局从而实现滑动动画
+         *
+         * 这里拿 LinearSmoothScroller 举例
+         */
+        val scroller: LinearSmoothScroller = object : LinearSmoothScroller(recyclerView.context) {
+            /**
+             * 这个方法用于计算滚动到目标位置所需的滚动向量。滚动向量是一个二维向量，包含水平和垂直方向上的滚动距离
+             *
+             * @param targetPosition 滑动的目标位置
+             * @return  返回一个 PointF 对象，表示滚动向量。
+             *              PointF.x 表示水平方向上的滚动距离，
+             *              PointF.y 表示垂直方向上的滚动距离
+             */
+            override fun computeScrollVectorForPosition(targetPosition: Int): PointF {
+                // 查找到屏幕里显示的第 1 个元素与
+                val firstChildPos = getPosition(getChildAt(0)!!)
+                val direction = if (targetPosition < firstChildPos) -1 else 1
+                // x 左右滑动，由于我们只实现了垂直的滑动，所以 x方向为0即可
+                // 整数代表正向移动，负数代表反向移动，这里的数值大小不重要，源码里面最终都会 normalize 归一化处理
+                return PointF(0f, direction.toFloat())
+            }
+
+            /**
+             * 计算每像素速度
+             *
+             * @param displayMetrics
+             * @return 返回每一像素的耗时，单位ms，假设返回值是1.0 代表着：1ms 内会滑动 1像素，1s会滑动1000像素
+             */
+            override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics?): Float {
+                return super.calculateSpeedPerPixel(displayMetrics)
+            }
+
+            /**
+             * 滑动速度的插值（实现滑动速度随着滑动时间的变化）
+             *
+             * @param dx
+             * @return
+             */
+            override fun calculateTimeForDeceleration(dx: Int): Int {
+                return super.calculateTimeForDeceleration(dx)
+            }
+            // 很多方法可以使用，不再一一列举
+            // ...
+        }
+        scroller.targetPosition = position
+        // 执行默认动画的逻辑
+        startSmoothScroll(scroller)
+
+    }
+
 }

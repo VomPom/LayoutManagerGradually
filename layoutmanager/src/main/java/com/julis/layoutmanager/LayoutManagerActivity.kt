@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,6 +50,13 @@ class LayoutManagerActivity : Activity() {
         layoutAdapter = LayoutManagerAdapter(onLayoutManagerListener)
         rvLayoutOption.adapter = layoutAdapter
         layoutAdapter.setData(layoutManageDescMap.values.toList())
+
+        findViewById<Button>(R.id.btn_scroll_to_30).setOnClickListener {
+            rvExampleList.scrollToPosition(30)
+        }
+        findViewById<Button>(R.id.btn_smooth_scroll_to_30).setOnClickListener {
+            rvExampleList.smoothScrollToPosition(30)
+        }
     }
 
     private fun initData() {
@@ -62,6 +70,8 @@ class LayoutManagerActivity : Activity() {
             put(LinearLayoutManager3::class.java, "3 向上滑动的时View的填充")
             put(LinearLayoutManager4::class.java, "4 两个方向的View填充")
             put(LinearLayoutManager5::class.java, "5 对顶部和底部滑动边界处理")
+            put(LinearLayoutManager6::class.java, "6 实现 scrollToPosition")
+            put(LinearLayoutManager7::class.java, "7 实现 smoothScrollToPosition")
         }
     }
 

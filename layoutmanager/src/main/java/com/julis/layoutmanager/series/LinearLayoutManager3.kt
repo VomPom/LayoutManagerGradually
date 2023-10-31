@@ -9,24 +9,12 @@ import kotlin.math.log
 /**
  * Created by @juliswang on 2023/10/19 19:58
  *
- * @Description
+ * @Description 对重新进入屏幕内的 ItemView 主要是向上滑动的时View的填充
+ *
  */
 class LinearLayoutManager3 : RecyclerView.LayoutManager() {
     private val TAG = "JLayoutManager"
 
-    /**
-     * OrientationHelper 提供了一些与布局方向（垂直或水平）相关的实用方法，
-     * 以帮助 RecyclerView.LayoutManager 更轻松地处理滚动、布局和测量任务。
-     * OrientationHelper 是一个抽象类，它有两个具体的实现：VerticalHelper 和 HorizontalHelper，分别用于处理垂直和水平布局。
-     *
-     * getTotalSpace()：获取 RecyclerView 可用空间（宽度或高度）。
-     * getStartAfterPadding()：获取 RecyclerView 起始边缘（顶部或左侧）与内边距之后的位置。
-     * getEndAfterPadding()：获取 RecyclerView 结束边缘（底部或右侧）与内边距之后的位置。
-     * getDecoratedStart(View view)：获取给定视图的起始边缘（顶部或左侧）与装饰（如 ItemDecoration）之后的位置。
-     * getDecoratedEnd(View view)：获取给定视图的结束边缘（底部或右侧）与装饰之后的位置。
-     * getTransformedEndWithDecoration(View view)：获取给定视图的结束边缘（底部或右侧）与装饰和转换（如缩放、旋转等）之后的位置。
-     * getTransformedStartWithDecoration(View view)：获取给定视图的起始边缘（顶部或左侧）与装饰和转换之后的位置。
-     */
     private val orientationVerticalHelper = OrientationHelper.createVerticalHelper(this)
 
     override fun isAutoMeasureEnabled(): Boolean {
@@ -101,7 +89,7 @@ class LinearLayoutManager3 : RecyclerView.LayoutManager() {
     }
 
     /**
-     * 填充新进入屏幕内的 ItemView
+     * 填充重新进入屏幕内的 ItemView
      *     getChildCount():childCount-> 当前屏幕内RecyclerView展示的 ItemView 数量
      *     getItemCount():itemCount-> 最大的 ItemView 数量，也就是 Adapter 传递的数据的数量
      */

@@ -6,6 +6,18 @@ import androidx.recyclerview.widget.RecyclerView
  * Created by @juliswang on 2023/10/19 19:58
  *
  * @Description
+ *
+ * 实现一个最简单的 LayoutManager，支持数据的填充，上下左右自由滑动，如果要成为一个 RecyclerView 可用的 LayoutManager，
+ *      接下来还需要实现:
+ *          1、数据填充只需要填充屏幕范围内的 ItemView
+ *          2、回收掉屏幕以外的 ItemView
+ *          3、屏幕外 ItemView 再回到屏幕后数据需要重新填充
+ *          4、对滑动边界进行处理
+ *          5、对 scrollToPosition 进行支持
+ *          6、对 smoothScrollToPosition 进行支持
+ *
+ *          ...其他更复杂的功能进行支持
+ *
  */
 class MostSimpleLayoutManager : RecyclerView.LayoutManager() {
     override fun isAutoMeasureEnabled(): Boolean {
@@ -15,7 +27,7 @@ class MostSimpleLayoutManager : RecyclerView.LayoutManager() {
     override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
         return RecyclerView.LayoutParams(
             RecyclerView.LayoutParams.MATCH_PARENT,
-            RecyclerView.LayoutParams.WRAP_CONTENT
+            RecyclerView.LayoutParams.MATCH_PARENT
         )
     }
 
@@ -50,7 +62,7 @@ class MostSimpleLayoutManager : RecyclerView.LayoutManager() {
      * @param dx
      * @param recycler
      * @param state
-     * @return 实际滚动的距离。如果 dx 为负并且朝该方向继续滚动，则返回值将为负
+     * @return 实际滚动的距离，如果 dx 为负并且朝该方向继续滚动，则返回值将为负
      */
     override fun scrollHorizontallyBy(dx: Int, recycler: RecyclerView.Recycler?, state: RecyclerView.State?): Int {
         // 在这里处理左右滚动逻辑，dx 表示滚动的距离

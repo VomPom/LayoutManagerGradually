@@ -5,8 +5,9 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Created by @juliswang on 2023/10/19 19:58
  *
- * @Description
+ * @Description 对 onLayoutChildren 里的逻辑进行修改:
  *              实现只添加展示可见范围的的 itemView ，而不是将所有的 View 一次性全部加载完
+ *
  */
 class LinearLayoutManager1 : RecyclerView.LayoutManager() {
     private val TAG = "JLayoutManager"
